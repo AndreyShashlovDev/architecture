@@ -14,6 +14,7 @@ public class MainActivity extends BaseActivity implements MainView, MainRouter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         final MainPresenter presenter = new MainPresenter(this, this);
         presenter.openNextScreen();
     }
