@@ -2,10 +2,11 @@ package com.architecture.standard.content.repository.network;
 
 import android.support.annotation.NonNull;
 
+import com.architecture.standard.BuildConfig;
+import com.architecture.standard.content.repository.network.api.SomeOtherApi;
+import com.architecture.standard.content.repository.network.api.TransactionApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.architecture.standard.BuildConfig;
-import com.architecture.standard.content.repository.network.api.ApiService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,8 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
     @NonNull
     @Override
-    public ApiService getApiService() {
-        return getServiceAdapter().create(ApiService.class);
+    public SomeOtherApi getApiService() {
+        return getServiceAdapter().create(SomeOtherApi.class);
+    }
+
+    @NonNull
+    @Override
+    public TransactionApi getApiTransaction() {
+        return getServiceAdapter().create(TransactionApi.class);
     }
 
     private Retrofit getServiceAdapter() {
@@ -43,7 +50,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
     private OkHttpClient getClient() {
         final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BASIC);
+        logging.setLevel(BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.BASIC);
 
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(logging);

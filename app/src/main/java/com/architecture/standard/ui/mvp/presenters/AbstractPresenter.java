@@ -2,7 +2,7 @@ package com.architecture.standard.ui.mvp.presenters;
 
 import android.support.annotation.NonNull;
 
-import com.architecture.standard.ui.mvp.router.Router;
+import com.architecture.standard.ui.mvp.routers.Router;
 import com.architecture.standard.ui.mvp.views.BaseView;
 
 /* package */ class AbstractPresenter<E extends BaseView, R extends Router> {

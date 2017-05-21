@@ -1,4 +1,4 @@
-package com.architecture.standard.ui.mvp.router;
+package com.architecture.standard.ui.mvp.routers;
 
 public interface MainRouter extends Router {
 

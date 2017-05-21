@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.trello.rxlifecycle2.components.RxActivity;
 import com.architecture.standard.AppContext;
 import com.architecture.standard.AppDelegate;
-import com.architecture.standard.ui.mvp.router.Router;
+import com.architecture.standard.ui.mvp.routers.Router;
 import com.architecture.standard.utils.BindLayout;
 
 import butterknife.ButterKnife;

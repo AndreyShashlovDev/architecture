@@ -1,0 +1,26 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+	toolVersion = '6.17'
+}
+
+checkstyle {
+	configFile = new File(rootDir, '/checkstyle/checkstyle.xml')
+	configProperties.checkStyleConfigDir = new File(rootProject.rootDir, '/checkstyle')
+}
+
+task checkstyle(type: Checkstyle) {
+	source 'src'
+	include '**/*.java'
+	exclude '**/gen/**'
+	classpath = files()
+}
+
+afterEvaluate {
+	if (project.tasks.findByName('check')) {
+		check.dependsOn('checkstyle')
+	}
+	if (project.tasks.findByName('preBuild')) {
+		preBuild.dependsOn('checkstyle')
+	}
+}

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.architecture.standard.R;
 import com.architecture.standard.ui.mvp.presenters.MainPresenter;
-import com.architecture.standard.ui.mvp.router.MainRouter;
+import com.architecture.standard.ui.mvp.routers.MainRouter;
 import com.architecture.standard.ui.mvp.views.MainView;
 import com.architecture.standard.utils.BindLayout;
 

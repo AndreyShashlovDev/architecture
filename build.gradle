@@ -4,7 +4,7 @@ buildscript {
         appCompileSdkVersion = 25
         appMinSdkVersion = 16
         appTargetSdkVersion = appCompileSdkVersion
-        appBuildToolsVersion = '25.0.3'
+        appBuildToolsVersion = '25.0.0'
         appApplicationId = 'com.architecture.standard'
 
         isTeamcityBuild = project.hasProperty('teamcity')
@@ -14,15 +14,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath ('com.android.tools.build:gradle:2.3.1') {
+        classpath('com.android.tools.build:gradle:2.3.2') {
             exclude group: 'org.apache.httpcomponents'
         }
+        classpath "io.realm:realm-gradle-plugin:2.0.2"
         classpath 'me.tatarka:gradle-retrolambda:3.6.1'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
-        classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-
     }
 
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
@@ -37,35 +36,6 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 
         flatDir { dirs 'libs' }
-    }
-}
-
-subprojects { project ->
-    apply plugin: 'checkstyle'
-
-    checkstyle {
-        toolVersion = '6.17'
-    }
-
-    checkstyle {
-        configFile = new File(rootDir, 'checkstyle.xml')
-        configProperties.checkStyleConfigDir = rootProject.rootDir
-    }
-
-    task checkstyle(type: Checkstyle) {
-        source 'src'
-        include '**/*.java'
-        exclude '**/gen/**'
-        classpath = files()
-    }
-
-    afterEvaluate {
-        if (project.tasks.findByName('check')) {
-            check.dependsOn('checkstyle')
-        }
-        if (project.tasks.findByName('preBuild')) {
-            preBuild.dependsOn('checkstyle')
-        }
     }
 }
 

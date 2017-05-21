@@ -1,9 +1,12 @@
 version = '0.1.0'
 
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'realm-android'
+
+apply from: '../checkstyle/checkstyle.gradle'
 
 retrolambda {
     jvmArgs '-noverify'
@@ -17,7 +20,6 @@ android {
 
     dexOptions {
         javaMaxHeapSize "4g"
-        preDexLibraries = false
     }
 
     compileOptions {
@@ -63,13 +65,14 @@ android {
     }
 
     productFlavors {
+        //use http://127.0.0.1/ only for demo!
         production {
-            buildConfigField "String", "API_SERVICE_URL", "\"\""
+            buildConfigField "String", "API_SERVICE_URL", "\"http://127.0.0.1/\""
             buildConfigField "long", "CONNECTION_TIME_OUT", "10"
         }
 
         internal {
-            buildConfigField "String", "API_SERVICE_URL", "\"\""
+            buildConfigField "String", "API_SERVICE_URL", "\"http://127.0.0.1/\""
             buildConfigField "long", "CONNECTION_TIME_OUT", "60"
         }
     }
@@ -115,10 +118,13 @@ if (propFile.canRead()) {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:animated-vector-drawable:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
 
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.3.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.7.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
 
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
@@ -137,9 +143,6 @@ dependencies {
 
     compile 'org.parceler:parceler-api:1.1.6'
     apt 'org.parceler:parceler:1.1.6'
-
-    compile 'com.j256.ormlite:ormlite-core:5.0'
-    compile 'com.j256.ormlite:ormlite-android:5.0'
 
     compile 'com.jakewharton:butterknife:8.5.1'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
