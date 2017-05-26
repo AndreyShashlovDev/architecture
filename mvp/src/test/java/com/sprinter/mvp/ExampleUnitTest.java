@@ -1,4 +1,4 @@
-package com.architecture.standard;
+package com.sprinter.mvp;
 
 import org.junit.Test;
 

@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex;
 import com.architecture.standard.content.repository.TransactionRepository;
 import com.architecture.standard.content.repository.models.Transaction;
 import com.architecture.standard.utils.RxUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -29,14 +30,17 @@ public class AppDelegate extends Application {
             StrictMode.enableDefaults();
         }
 
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+
+        LeakCanary.install(this);
+
         mAppContext = new AppContextFactory(getApplicationContext()).createDefault();
 
         //for test
         final TransactionRepository transactions = mAppContext.getDataManager()
                                                               .getTransactions();
-        transactions.getAllTransactions()
-                    .compose(RxUtils::async)
-                    .subscribe(this::onGetTransactions, this::onError);
         transactions.getAllTransactions()
                     .compose(RxUtils::async)
                     .subscribe(this::onGetTransactions, this::onError);

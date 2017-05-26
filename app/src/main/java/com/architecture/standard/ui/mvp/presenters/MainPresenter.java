@@ -9,10 +9,16 @@ public class MainPresenter extends AbstractPresenter<MainView, MainRouter> {
 
     public MainPresenter(@NonNull final MainView view, @NonNull final MainRouter router) {
         super(view, router);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onViewCreated() {
+
     }
 
     public void openNextScreen() {
-        getRouter().openFirstScreen();
+        getRouter().openTransactionsScreen();
     }
 
 }

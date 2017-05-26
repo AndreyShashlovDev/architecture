@@ -7,18 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.architecture.standard.AppContext;
 import com.architecture.standard.AppDelegate;
+import com.architecture.standard.ui.mvp.presenters.AbstractPresenter;
+import com.architecture.standard.ui.mvp.views.BaseView;
 import com.architecture.standard.utils.BindLayout;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseFragment extends RxFragment {
+public abstract class AbstractFragment<E extends AbstractPresenter> extends RxFragment
+        implements BaseView<FragmentEvent> {
 
     @Nullable private Unbinder mUnbinder;
     @Nullable private AppContext mAppContext;
+    @Nullable private E mPresenter;
 
     @NonNull
     protected AppContext getAppContext() {
@@ -26,6 +31,23 @@ public abstract class BaseFragment extends RxFragment {
             throw new IllegalStateException("Unable to get context before calling onCreateView!");
         }
         return mAppContext;
+    }
+
+    @NonNull
+    public abstract E onCreatePresenter();
+
+    @SuppressWarnings("unchecked")
+    public final void setPresenter(@Nullable final AbstractPresenter presenter) {
+        mPresenter = (E) presenter;
+    }
+
+    @NonNull
+    public E getPresenter() throws NullPointerException {
+        if (mPresenter == null) {
+            throw new NullPointerException();
+        }
+
+        return mPresenter;
     }
 
     @Override
@@ -41,6 +63,13 @@ public abstract class BaseFragment extends RxFragment {
         } else {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getAppContext().getLifecycleHelper()
+                       .onCreate(this, savedInstanceState);
     }
 
     @SuppressWarnings("unchecked")
@@ -70,11 +99,25 @@ public abstract class BaseFragment extends RxFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getAppContext().getLifecycleHelper()
+                       .onSaveInstanceState(this, outState);
+    }
+
+    @Override
     public void onDestroyView() {
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        getAppContext().getLifecycleHelper()
+                       .onDestroy(this);
+        super.onDestroy();
     }
 
 }
